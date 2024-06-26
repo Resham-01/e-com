@@ -27,3 +27,14 @@ component data:
     state => data within a component
     props => incoming data for a component
 */
+
+/**
+ * git clone
+ * git status
+ * git add .
+ * git commit
+ * git fetch
+ * git push
+ * git pull
+ * git log
+ */
