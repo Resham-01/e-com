@@ -1,0 +1,73 @@
+/* About Us Page Styles */
+
+.about-us-section {
+    padding: 50px 0;
+  }
+  
+  .section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .section-description {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #666;
+  }
+  
+  .sub-section-title {
+    font-size: 2rem;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .sub-section-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #666;
+  }
+  
+  .value-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .value-item {
+    margin-bottom: 10px;
+  }
+  
+  /* Animation Styles */
+  
+  .fade-in {
+    opacity: 0;
+    animation: fadeInAnimation ease 1s forwards;
+  }
+  
+  @keyframes fadeInAnimation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .bounce-in {
+    animation: bounceInAnimation 1s ease;
+  }
+  
+  @keyframes bounceInAnimation {
+    0% {
+      transform: scale(0.8);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
