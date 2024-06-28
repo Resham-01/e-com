@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Gallery.component.css';
-import { Footer } from '../../common/Footer/Footer.component';
+import { Footer } from '../../../common/Footer/Footer.component';
 
 const images = [
   {

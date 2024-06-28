@@ -54,8 +54,12 @@ router.route("/login") // auth/login
                         var token = createToken(user)
                         res.json({
                             msg: "login successfullly",
-                            token: token,
                             user: user,
+                            user_details: {
+                                userName: user.userName,
+                                role:user.role,
+                                token:token
+                            },
                             status: 200
                         })
                     }

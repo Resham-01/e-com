@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './Product.component.css';
-import { Footer } from '../../common/Footer/Footer.component';
+import { Footer } from '../../../common/Footer/Footer.component';
 
 const productData = {
     1: {

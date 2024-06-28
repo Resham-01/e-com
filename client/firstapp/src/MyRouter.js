@@ -1,14 +1,15 @@
 import React from "react";
 
 import { BrowserRouter, Routes, Route, NavLink} from 'react-router-dom';
-import { Home } from "./component/Auth/Page/Home.component";
+import { Home } from "./component/Auth/Page/User/Home.component";
 import { Navbar } from "./component/common/Header/Header.component";
 import { Count } from "./component/Pages/count.component";
 import { SignUp } from "./component/Auth/Register/signup.component";
-import { Product } from "./component/Auth/Page/Product.component";
-import { AboutUs } from "./component/Auth/Page/About.component";
-import { Gallery } from "./component/Auth/Page/Gallery.component";
+import { Product } from "./component/Auth/Page/User/Product.component";
+import { AboutUs } from "./component/Auth/Page/User/About.component";
+import { Gallery } from "./component/Auth/Page/User/Gallery.component";
 import { SignIn } from "./component/Auth/Login/SignIn";
+import { AdminDashboard } from "./component/Auth/Page/Admin/Dashboard/Dashboard.component";
 
 const PageNotFound = props => {
     return (
@@ -31,6 +32,11 @@ export const MyRoute = (props) => {
             <Route path="/login" element={<SignIn/>} />
             <Route path="/register" element={<SignUp/>} />
             <Route path="/count" element={<Count/>} />
+
+
+            <Route path="/admin/dashboard" element={<AdminDashboard/>} />
+
+
             <Route path="*" element={<PageNotFound/>} />
             
         </Routes>

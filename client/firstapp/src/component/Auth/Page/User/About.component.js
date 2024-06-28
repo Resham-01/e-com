@@ -1,5 +1,5 @@
 import React from 'react';
-import { Footer } from '../../common/Footer/Footer.component';
+import { Footer } from '../../../common/Footer/Footer.component';
 import "./About.component.css"
 
 export const AboutUs = () => {
