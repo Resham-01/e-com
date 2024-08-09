@@ -1,0 +1,79 @@
+.form-container {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h5 {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+.form-container label {
+    margin-top: 10px;
+    display: block;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-container input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form-container .form-control-lg {
+    font-size: 1rem;
+}
+
+.form-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-container button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.form-container button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.form-container .file-input {
+    margin-top: 10px;
+}
+
+.file-input input[type="file"] {
+    display: block;
+}
+
+.form-container .form-group {
+    margin-bottom: 20px;
+}

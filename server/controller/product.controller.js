@@ -24,18 +24,30 @@ function map_product_request(requestData, product) {
     if (requestData.product_description) {
         product.product_description = requestData.product_description
     }
+    if (requestData.prodcut_model) {
+        product.prodcut_model = requestData.prodcut_model
+    }
+    if (requestData.product_tag) {
+        product.product_tag = requestData.product_tag.split(',')
+    }
+    if (requestData.warrentyStatus) {
+        product.warrentyStatus = requestData.warrentyStatus
+    }
+    if (requestData.warrentyPeriod) {
+        product.warrentyPeriod = requestData.warrentyPeriod
+    }
     if (!product.product_discount) {
         product.product_discount = {}
     }
     if (requestData.discountedItem) {
-        product.product_discount.discountedItem = requestData.discountedItem.split(",")
+        product.product_discount.discountedItem = requestData.discountedItem
     }
 
     if (requestData.discountedType) {
         product.product_discount.discountedType = requestData.discountedType
     }
-    if (requestData.discountedOffer) {
-        product.product_discount.discountedOffer = requestData.discountedOffer
+    if (requestData.discountedValue) {
+        product.product_discount.discountedValue = requestData.discountedValue
     }
     if (requestData.vendor) {
         product.vendor = requestData.vendor
@@ -46,7 +58,7 @@ function map_product_request(requestData, product) {
     if (requestData.product_description) {
         product.product_description = requestData.product_description
     }
-    
+
     return product;
 }
 
@@ -62,7 +74,7 @@ exports.addProduct = async (req, res, next) => {
     const newProduct = new productModel({})
     if (req.files) {
         req.body.product_img = req.files.map((item) => {
-            return item.originalname;
+            return "http://localhost:8000/file/images/" + item.filename;
         })
     }
     map_product_request(req.body, newProduct)
@@ -80,11 +92,11 @@ exports.addProduct = async (req, res, next) => {
 
 exports.viewProduct = async (req, res, next) => {
     var product = await productModel.find()
-    .populate("vendor",{
-        userName:1,
-        email:1
-    })
-    .populate("product_category", "category_name")
+        .populate("vendor", {
+            userName: 1,
+            email: 1
+        })
+        .populate("product_category", "category_name")
     if (!product) {
         return next({
             msg: "something went to wrong",
@@ -97,7 +109,7 @@ exports.viewProduct = async (req, res, next) => {
             status: 400
         })
     }
-    
+
     res.json(product)
 }
 
@@ -120,7 +132,7 @@ exports.productDetails = async (req, res, next) => {
 
 
 exports.updateProduct = (req, res, next) => {
-    productModel.findByIdAndUpdate(req.params.product_id)
+    productModel.findById(req.params.product_id)
         .then(product => {
             if (!product) {
                 return next({
@@ -128,20 +140,70 @@ exports.updateProduct = (req, res, next) => {
                     status: 400
                 })
             }
-            map_product_request(req.body, product)
-            product.save()
-                .then(updatedProduct => {
-                    res.json(updatedProduct)
-                })
-                .catch(err => {
-                    return next(err)
-                })
+            product.vendor = req.user._id;
+            map_product_request(req.body, product);
+            console.log("update data: ", product)
+            return product.save();
+        })
+        .then(() => {
+            res.json({
+                msg: "Product updated successfully",
+            });
         })
         .catch(err => {
             return next(err)
         })
-
 }
+
+
+// exports.updateProduct = (req, res, next) => {
+//     productModel.findByIdAndUpdate(req.params.product_id)
+//         .then(product => {
+//             if (!product) {
+//                 return next({
+//                     msg: "product not found",
+//                     status: 400
+//                 })
+//             }
+//             product.vendor = req.user._id
+//             map_product_request(req.body, product)
+//             product.save()
+//                 .then(updatedProduct => {
+//                     res.json(updatedProduct)
+//                 })
+//                 .catch(err => {
+//                     return next(err)
+//                 })
+//         })
+//         .catch(err => {
+//             return next(err)
+//         })
+// }
+
+// exports.updateProduct = (req, res, next) => {
+//     productModel.findByIdAndUpdate(
+//         req.params.product_id,
+//         { 
+//             ...req.body, 
+//             vendor: req.user._id 
+//         },
+//         { new: true, runValidators: true } 
+//     )
+//     .then(updatedProduct => {
+//         if (!updatedProduct) {
+//             return next({
+//                 msg: "Product not found",
+//                 status: 400
+//             });
+//         }
+//         res.json(updatedProduct);
+//         console.log("updated product is: ", product)
+//     })
+//     .catch(err => {
+//         return next(err);
+//     });
+// };
+
 
 
 
@@ -190,3 +252,5 @@ exports.deleteProduct = async (req, res, next) => {
         status: 200
     })
 }
+
+

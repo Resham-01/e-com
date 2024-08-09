@@ -63,6 +63,7 @@ app.use("/auth", authroute)
 app.use("/category", categoryRoute)
 
 app.use("/product", productRoute)
+app.use("/uploads", express.static('images'))
 
 app.use(function (req, res, next) {
     next({

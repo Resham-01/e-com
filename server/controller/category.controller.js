@@ -19,7 +19,7 @@ exports.AddCategory = async (req, res, next) => {
     }
     else {
         return next({
-            msg: "Category already exist",
+            msg: "Category Already Exist",
             status: 400
         })
     }
@@ -70,7 +70,6 @@ exports.updateCategory = async (req, res, next) => {
         category_name: req.body.category_name
     }, { new: true })
     res.json(category)
-
 }
 
 
@@ -90,7 +89,7 @@ exports.deleteCategory = async (req, res, next) => {
     }
     res.json({
         deleteCategory: category,
-        msg: "category deleted successfully",
+        msg: "Category Deleted Successfully",
         status: 200
     })
 }

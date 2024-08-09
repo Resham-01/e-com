@@ -1,57 +1,24 @@
-// import React from 'react';
-// import "./Header.component.css";
-// import { NavLink } from 'react-router-dom';
-// import { isAuthenticated } from '../../utility/isAuthenticated';
-
-// function Header(props) {
-// let user = isAuthenticated()
-// const navigate = useNavigate()
-//     return (
-//         <div className="header"> {/* Apply the header class here */}
-//             {props.isLoggedIn ?
-//                 <ul>
-//                     {/* Navigation links for logged-in users */}
-//                     <li><NavLink to="/">Home</NavLink></li>
-//                     <li><NavLink to="/product">Product</NavLink></li>
-//                     <li><NavLink to="/gallery">Gallery</NavLink></li>
-//                     <li><NavLink to="/logout">LogOut</NavLink></li>
-//                 </ul>
-//                 :
-//                 <ul>
-//                     {/* Navigation links for non-logged-in users */}
-//                     <li><NavLink to="/">Home</NavLink></li>
-//                     <li><NavLink to="/product">Product</NavLink></li>
-//                     <li><NavLink to="/gallery">Gallery</NavLink></li>
-//                     <li><NavLink to="/aboutUs">About Us</NavLink></li>
-//                     <li><NavLink to="/login">LogIn</NavLink></li>
-//                     <li><NavLink to="/register">Register</NavLink></li>
-//                 </ul>
-//             }
-//         </div>
-//     );
-// }
-
-// export const Navbar = Header;
-
-
 import React, { useState } from 'react';
 import "./Header.component.css";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../utility/isAuthenticated';
 
 function Header(props) {
-    let user = isAuthenticated()
-    const navigate = useNavigate()
+    let user = isAuthenticated();
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    console.log(user);
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
     };
 
-    const handleLogout = event => {
-        localStorage.clear()
-        navigate("/")
-    }
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate("/");
+    };
 
     return (
         <div className="header">
@@ -60,30 +27,40 @@ function Header(props) {
                 <span></span>
                 <span></span>
             </div>
-            <>
-                <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
-                    <li><NavLink exact to="/" activeClassName="active-class">Home</NavLink></li>
-                    <li><NavLink to="/product" activeClassName="active-class">Product</NavLink></li>
-                    <li><NavLink to="/gallery" activeClassName="active-class">Gallery</NavLink></li>
-                    <li><NavLink to="/aboutUs" activeClassName="active-class">About Us</NavLink></li>
-                    {
-                        !user &&
-                        <>
-                            <li><NavLink to="/login" activeClassName="active-class">LogIn</NavLink></li>
-                            <li><NavLink to="/register" activeClassName="active-class">Register</NavLink></li>
-                        </>
-                    }
-                    {
-                        user && 
-                        <>
-                        <li><NavLink to="/login" activeClassName="active-class" onClick={handleLogout}>LogOut</NavLink></li>
-                        <li><NavLink to="/user/profile" activeClassName="active-class">{user.userName}</NavLink></li>
-                        </>
-                    }
-                </ul>
-            </>
+            <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
+                <li><NavLink exact to="/" activeClassName="active-class">Home</NavLink></li>
+                <li><NavLink to="/product" activeClassName="active-class">Product</NavLink></li>
+                <li><NavLink to="/gallery" activeClassName="active-class">Gallery</NavLink></li>
+                <li><NavLink to="/aboutUs" activeClassName="active-class">About Us</NavLink></li>
+                {!user && (
+                    <>
+                        <li><NavLink to="/login" activeClassName="active-class">LogIn</NavLink></li>
+                        <li><NavLink to="/register" activeClassName="active-class">Register</NavLink></li>
+                    </>
+                )}
+                {user && (
+                    <>
+                        <li className="profile-menu" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
+                            <NavLink to={user.role === "admin" ? "/admin/profile" : "/user/profile"} activeClassName="active-class">
+                                {user.userName} &nbsp;
+                                <img src={user.image?.[0]} alt="Profile" className="profile-picture" />
+                            </NavLink>
+                            {showDropdown && (
+                                <div className="dropdown-menu">
+                                    <NavLink to={user.role === "admin" ? "/admin/profile" : "/user/profile"}>View Profile</NavLink>
+                                    <NavLink to="/setting">Settings</NavLink>
+                                    <NavLink to="/help-center">Help Center</NavLink>
+                                    <div onClick={handleLogout}>Log Out</div>
+                                </div>
+                            )}
+                        </li>
+                    </>
+                )}
+            </ul>
         </div>
     );
 }
 
 export const Navbar = Header;
+
+

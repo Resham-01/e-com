@@ -54,11 +54,12 @@ router.route("/login") // auth/login
                         var token = createToken(user)
                         res.json({
                             msg: "login successfullly",
-                            user: user,
                             user_details: {
                                 userName: user.userName,
-                                role:user.role,
-                                token:token
+                                role: user.role,
+                                token: token,
+                                image: user.image || "",
+                                email: user.email
                             },
                             status: 200
                         })
@@ -78,6 +79,7 @@ router.route("/login") // auth/login
 
 router.route('/register')
     .post(upload.array('img'), function (req, res, next) {
+        console.log("image", req.body)
         UserModel.findOne({ email: req.body.email })
             .then(user => {
                 if (user) {
@@ -105,7 +107,7 @@ router.route('/register')
                         //     })
                         // }
                         req.body.image = req.files.map((item) => {
-                            return item.originalname;
+                            return "http://localhost:8000/file/images/" + item.filename; // original name change to filename
                         })
                     }
                     map_user_request(req.body, newUser)

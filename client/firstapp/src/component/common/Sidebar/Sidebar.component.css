@@ -1,0 +1,41 @@
+.sidebar {
+    position: sticky;
+    top: 0;
+    height: 10vh; /* Full height of the viewport */
+    overflow-y: auto; /* Enable scrolling if content exceeds viewport height */
+    background-color: #17a2b8; /* Example background color */
+    color: white; /* Example text color */
+    z-index: 1; /* Ensure it stays above other content */
+}
+
+.sidebar .flex-shrink-0 {
+    width: 280px; /* Set the width of your sidebar */
+    padding: 20px; /* Add padding to create space around content */
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    color: aqua;
+}
+
+.rotate-icon {
+    transition: transform 0.2s ease-in-out;
+}
+
+.rotate-icon.collapsed {
+    transform: rotate(0deg);
+}
+
+.rotate-icon.expanded {
+    transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; /* Hide sidebar on smaller screens */
+    }
+}

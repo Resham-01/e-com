@@ -25,11 +25,14 @@ const productSchema = mongoose.Schema({
     product_description: {
         type: String
     },
+    product_tag: {
+        type: [String]
+    },
     warrentyStatus: Boolean,
     warrentyPeriod: {
         type: String
     },
-    prodcut_model: String,
+    product_model: String,
     product_img: [String],
     product_discount: {
         discountedItem: Boolean,
@@ -37,7 +40,7 @@ const productSchema = mongoose.Schema({
             type: String,
             enum: ["percentage", "quantity", "value"]
         },
-        discountedOffer:{
+        discountedValue:{
             type: String
         }
     },
@@ -45,10 +48,9 @@ const productSchema = mongoose.Schema({
         type: ObjectId,
         ref: "user"
     }
-
-
-
+    
 }, { timestamps: true })
 
 const productModel = mongoose.model("product", productSchema)
 module.exports = productModel
+

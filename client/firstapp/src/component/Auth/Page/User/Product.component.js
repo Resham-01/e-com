@@ -1,47 +1,43 @@
-import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import './Product.component.css';
+import React, { useState, useEffect } from 'react';
+import { Button } from '../../../common/Button/Button.component';
+import { Link } from 'react-router-dom';
+import httpClient from './../../../utility/httpClient';
 import { Footer } from '../../../common/Footer/Footer.component';
-
-const productData = {
-    1: {
-        id: 1,
-        name: 'Product 1',
-        description: 'This is a detailed description of Product 1.',
-        price: 19.99,
-        imageUrl: 'https://via.placeholder.com/300'
-    },
-    2: {
-        id: 2,
-        name: 'Product 2',
-        description: 'This is a detailed description of Product 2.',
-        price: 29.99,
-        imageUrl: 'https://via.placeholder.com/300'
-    },
-    3: {
-        id: 3,
-        name: 'Product 3',
-        description: 'This is a detailed description of Product 3.',
-        price: 39.99,
-        imageUrl: 'https://via.placeholder.com/300'
-    }
-};
+import './Product.component.css';
 
 export const Product = () => {
-    const { productId } = useParams();
-    const product = productData[productId];
+    // const { productId } = useParams();
+    const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    // const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-    const handleAddToCart = () => {
-        // Logic to add product to cart
-        console.log(`Added ${quantity} of ${product.name} to cart.`);
-    };
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await httpClient.GET(`/product/view_product`);
+                setProduct(response.data);
+            } catch (error) {
+                console.error('There was an error fetching the product!', error);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
+    // const handleAddToCart = () => {
+    //     setIsAddingToCart(true);
+    //     // Simulating a call to the backend to add the product to the cart
+    //     setTimeout(() => {
+    //         console.log(`Added ${quantity} of ${product.product_name} to cart.`);
+    //         setIsAddingToCart(false);
+    //     }, 1000);
+    // };
 
     if (!product) {
         return (
             <div className="product-page container fade-in">
                 <h2>Product not found</h2>
-                <p>We couldn't find the product you're looking for. Please go back to the <Link to="/" className={"text-primary"}>Home Page</Link>.</p>
+                <p>We couldn't find the product you're looking for. Please go back to the <Link to="/" className="text-primary">Home Page</Link>.</p>
             </div>
         );
     }
@@ -50,12 +46,12 @@ export const Product = () => {
         <div className="product-page container fade-in">
             <div className="row">
                 <div className="col-md-6">
-                    <img src={product.imageUrl} alt={product.name} className="img-fluid bounce-in" />
+                    {/* <img src={`http://localhost:8000${product.product_img?.[0]}`} alt={product.product_name} className="img-fluid bounce-in" /> */}
                 </div>
                 <div className="col-md-6">
-                    <h1>{product.name}</h1>
-                    <p className="price">${product.price.toFixed(2)}</p>
-                    <p>{product.description}</p>
+                    <h1>{product.product_name}</h1>
+                    <p className="price">${product.product_price}</p>
+                    <p>{product.product_description}</p>
                     <div className="quantity">
                         <label htmlFor="quantity">Quantity:</label>
                         <input
@@ -67,9 +63,40 @@ export const Product = () => {
                             min="1"
                         />
                     </div>
-                    <button className="btn btn-primary mt-3" onClick={handleAddToCart}>
-                        Add to Cart
-                    </button>
+                    <Button
+                        enabledLabel="Add to Cart"
+                        disabledLabel="Adding to Cart..."
+                        // isSubmitting={isAddingToCart}
+                        isValidForm={true}
+                        // onClick={handleAddToCart}
+                    />
+                </div>
+            </div>
+
+            <div className="container m-5">
+                <div className="row">
+                    {product.map((product) => {
+                        const imgUrl = product.product_img?.[0] ? `${product.product_img?.[0]}` : "";
+                        return (
+                            <div className="col-lg-4 col-md-6 mb-4" key={product._id}>
+                                <div className="card">
+                                    {imgUrl && (
+                                        <img
+                                            src={imgUrl}
+                                            className="card-img-top"
+                                            alt={product.product_name}
+                                        />
+                                    )}
+
+                                    <div className="card-body">
+                                        <h5 className="card-title">{product.product_name}</h5>
+                                        <p className="card-text">${product.product_price?.toFixed(2)}</p>
+                                        <button className="btn btn-primary">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
             <Footer />

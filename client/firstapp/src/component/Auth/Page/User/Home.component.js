@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.component.css';
+import httpClient from '../../../utility/httpClient';
 import { Footer } from '../../../common/Footer/Footer.component';
+import './Home.component.css';
 
-export const Home = (prop) => {
+export const Home = () => {
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await httpClient.GET('/product/view_product');
+                setProducts(response.data);
+                console.log("response is", response.data)
+            } catch (error) {
+                console.error('There was an error fetching the products!', error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
     return (
         <div className="fade-in">
-
             {/* Hero Section */}
             <div className="jumbotron jumbotron-fluid text-center">
                 <div className="container">
@@ -19,21 +35,31 @@ export const Home = (prop) => {
             {/* Product Showcase */}
             <div className="container">
                 <div className="row">
-                    {["Product 1", "Product 2", "Product 3"].map((product, index) => (
-                        <div className="col-lg-4 col-md-6 mb-4" key={index}>
-                            <div className="card">
-                                <img src={`https://via.placeholder.com/300?text=${product}`} className="card-img-top" alt={product} />
-                                <div className="card-body">
-                                    <h5 className="card-title">{product}</h5>
-                                    <p className="card-text">${(index + 1) * 10 + 9.99}</p>
-                                    <button className="btn btn-primary">Add to Cart</button>
+                    {products.map((product) => {
+                        const imgUrl = product.product_img?.[0] ? `${product.product_img?.[0]}` : "";
+                        return (
+                            <div className="col-lg-4 col-md-6 mb-4" key={product._id}>
+                                <div className="card">
+                                    {imgUrl && (
+                                        <img
+                                            src={imgUrl}
+                                            className="card-img-top"
+                                            alt={product.product_name}
+                                        />
+                                    )}
+
+                                    <div className="card-body">
+                                        <h5 className="card-title">{product.product_name}</h5>
+                                        <p className="card-text">${product.product_price?.toFixed(2)}</p>
+                                        <button className="btn btn-primary">Add to Cart</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

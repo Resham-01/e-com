@@ -40,12 +40,21 @@ export const SignIn = props => {
         httpClient.POST("auth/login", formData)
             .then(response => {
                 Notify.ShowSuccess(`Welcome ${formData.userName}`)
-                navigate("/")
+                console.log(response);
+                // localStorage.setItem("user_details", JSON.stringify(response.data.user_details))
                 localStorage.setItem("user_details", JSON.stringify(response.data.user_details))
                 console.log(isAuthenticated())
-                isAuthenticated() && isAuthenticated().role === "admin" ?
+
+                if (isAuthenticated() && isAuthenticated().role === "admin") {
                     navigate("/admin/dashboard?")
-                    : navigate("/user/profile")
+                }
+                else {
+                    navigate("/user/profile")
+                }
+                // isAuthenticated() && isAuthenticated().role === "admin" ?
+                // navigate("/admin/dashboard?")
+                // : navigate("/user/profile")
+                // navigate("/")
             })
             .catch(err => {
                 setIsSubmitting(false)

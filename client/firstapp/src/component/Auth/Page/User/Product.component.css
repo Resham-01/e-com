@@ -1,44 +1,29 @@
-/* ProductPage.css */
-
-.fade-in {
-    animation: fadeIn 1s ease-in;
-}
-
-.bounce-in {
-    animation: bounceIn 1s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes bounceIn {
-    from {
-        transform: scale(0.5);
-    }
-    to {
-        transform: scale(1);
-    }
-}
-
+/* General styles for the product page */
 .product-page {
+    padding: 2rem 1rem;
     margin-top: 2rem;
 }
 
+/* Image styling */
+.product-page img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Product details styling */
 .product-page .price {
-    font-size: 1.5rem;
-    color: #007bff;
+    font-size: 2rem;
+    color: #28a745;
+    margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
 .product-page .quantity {
     display: flex;
     align-items: center;
+    margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -48,5 +33,15 @@
 
 .product-page .quantity input {
     width: 60px;
+    padding: 0.5rem;
     text-align: center;
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 2s ease-in;
+}
+
+.bounce-in {
+    animation: bounceIn 1s;
 }

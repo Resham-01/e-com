@@ -1,52 +1,22 @@
-/* .header {
-    position: sticky;
-    top: 0;
-    height: 44px;
-}
-
-ul {
-    display: flex;
-    justify-content: space-evenly;
-    list-style: none;
-    background-color: rgb(55, 98, 158);
-}
-
-li {
-    padding: 10px;
-}
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-a:hover {
-    color: aqua;
-    cursor: pointer;
-}
-
-.active-class {
-    color: aquamarine;
-    border-bottom: 3px solid black;
-
-} */
-
-
-
 .header {
     position: sticky;
     top: 0;
     height: 44px;
     background-color: rgb(55, 98, 158);
     z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
 }
 
-ul {
+.nav-links {
     display: flex;
     justify-content: space-evenly;
     list-style: none;
     margin: 0;
     padding: 0;
+    flex-grow: 1;
 }
 
 li {
@@ -68,9 +38,58 @@ a:hover {
     border-bottom: 3px solid black;
 }
 
+.profile-picture {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.toggle-button {
+    display: none;
+}
+
+.profile-menu {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 44px;
+    right: 0;
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    flex-direction: column;
+}
+
+.profile-menu:hover .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-menu a,
+.dropdown-menu div {
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu div:hover {
+    background-color: #f0f0f0;
+}
+
 @media (max-width: 768px) {
     .header {
-        position: relative;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
     }
 
     .nav-links {
@@ -101,5 +120,16 @@ a:hover {
         height: 3px;
         margin: 5px;
         background-color: white;
+    }
+
+    .profile-menu {
+        width: 100%;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        left: 0;
+        top: 44px;
+        right: auto;
     }
 }

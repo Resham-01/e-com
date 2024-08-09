@@ -1,5 +1,5 @@
-const multer = require("multer")
 
+const multer = require("multer")
 const path = require("path")
 
 const Storage = multer.diskStorage({
@@ -29,3 +29,4 @@ const upload = multer({
 })
 
 module.exports = upload
+
