@@ -20,6 +20,9 @@ import { Setting } from "./component/Auth/Page/User/Setting/Setting.component";
 import { ProductDetails } from "./component/Auth/Page/Admin/Product/ProductDetails/ProductDetails.component";
 import { DeleteProduct } from "./component/Auth/Page/Admin/Product/Delete/DeleteProduct.component";
 import { UpdateProduct } from "./component/Auth/Page/Admin/Product/Update/UpdateProduct.component";
+import { SearchProduct } from "./component/Auth/Page/Admin/Product/SearchProduct/SearchProduct.component";
+import { ForgotPassword } from "./component/Auth/Forget Password/Forgotpassword.Component";
+import { ResetPassword } from "./component/Auth/Reset Password/ResetPassword.component";
 
 const PageNotFound = () => {
     return (
@@ -47,6 +50,8 @@ export const MyRoute = () => {
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/login" element={<SignIn />} />
                 <Route path="/register" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
                 <Route path="/count" element={<Count />} />
                 
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -60,6 +65,7 @@ export const MyRoute = () => {
                 <Route path="/admin/product/view_details/:product_id" element={<ProductDetails />} />
                 <Route path="/admin/product/delete/:product_id" element={<DeleteProduct />} />
                 <Route path="/admin/product/update/:product_id" element={<UpdateProduct />} />
+                <Route path="/admin/product/search" element={<SearchProduct />} />
                 
                 <Route path="/admin/profile" element={<AdminDashboard />} />
                 <Route path="/user/profile" element={<UserProfile />} />

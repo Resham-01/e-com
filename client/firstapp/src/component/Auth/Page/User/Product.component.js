@@ -5,9 +5,11 @@ import httpClient from './../../../utility/httpClient';
 import { Footer } from '../../../common/Footer/Footer.component';
 import './Product.component.css';
 
+const IMG_URL = 'http://localhost:8000/file/images';
+
 export const Product = () => {
     // const { productId } = useParams();
-    const [product, setProduct] = useState(null);
+    const [products, setProducts] = useState(null);
     const [quantity, setQuantity] = useState(1);
     // const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -15,7 +17,7 @@ export const Product = () => {
         const fetchProduct = async () => {
             try {
                 const response = await httpClient.GET(`/product/view_product`);
-                setProduct(response.data);
+                setProducts(response.data);
             } catch (error) {
                 console.error('There was an error fetching the product!', error);
             }
@@ -33,7 +35,7 @@ export const Product = () => {
     //     }, 1000);
     // };
 
-    if (!product) {
+    if (!products) {
         return (
             <div className="product-page container fade-in">
                 <h2>Product not found</h2>
@@ -49,9 +51,9 @@ export const Product = () => {
                     {/* <img src={`http://localhost:8000${product.product_img?.[0]}`} alt={product.product_name} className="img-fluid bounce-in" /> */}
                 </div>
                 <div className="col-md-6">
-                    <h1>{product.product_name}</h1>
-                    <p className="price">${product.product_price}</p>
-                    <p>{product.product_description}</p>
+                    <h1>{products.product_name}</h1>
+                    <p className="price">${products.product_price}</p>
+                    <p>{products.product_description}</p>
                     <div className="quantity">
                         <label htmlFor="quantity">Quantity:</label>
                         <input
@@ -75,16 +77,25 @@ export const Product = () => {
 
             <div className="container m-5">
                 <div className="row">
-                    {product.map((product) => {
-                        const imgUrl = product.product_img?.[0] ? `${product.product_img?.[0]}` : "";
+                {products.map((product) => {
+                        // Get the first image from the product_img array
+                        const firstImage = product.product_img?.[0];
+
                         return (
                             <div className="col-lg-4 col-md-6 mb-4" key={product._id}>
                                 <div className="card">
-                                    {imgUrl && (
+                                    {/* Render the first image if it exists */}
+                                    {firstImage ? (
                                         <img
-                                            src={imgUrl}
+                                            src={`${IMG_URL}/${firstImage}`}
                                             className="card-img-top"
                                             alt={product.product_name}
+                                        />
+                                    ) : (
+                                        <img
+                                            src="path/to/placeholder.jpg" // Placeholder image if no product_img
+                                            className="card-img-top"
+                                            alt="Placeholder"
                                         />
                                     )}
 

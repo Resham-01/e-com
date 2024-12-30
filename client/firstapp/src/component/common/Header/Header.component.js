@@ -9,7 +9,7 @@ function Header(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
 
-    console.log(user);
+    // console.log(user);
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
@@ -29,7 +29,7 @@ function Header(props) {
             </div>
             <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
                 <li><NavLink exact to="/" activeClassName="active-class">Home</NavLink></li>
-                <li><NavLink to="/product" activeClassName="active-class">Product</NavLink></li>
+                <li><NavLink to="/product" activeClassName="active-class">Products</NavLink></li>
                 <li><NavLink to="/gallery" activeClassName="active-class">Gallery</NavLink></li>
                 <li><NavLink to="/aboutUs" activeClassName="active-class">About Us</NavLink></li>
                 {!user && (

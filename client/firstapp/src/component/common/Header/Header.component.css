@@ -1,7 +1,7 @@
 .header {
     position: sticky;
     top: 0;
-    height: 44px;
+    height: 70px;
     background-color: rgb(55, 98, 158);
     z-index: 1000;
     display: flex;

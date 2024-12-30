@@ -14,7 +14,7 @@ export const UpdateProduct = props => {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const { product_id } = useParams()
-
+    
     useEffect(() => {
         setIsLoading(true)
         httpClient.GET(`/product/product_details/${product_id}`)

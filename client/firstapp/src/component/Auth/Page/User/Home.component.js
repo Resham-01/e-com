@@ -4,6 +4,8 @@ import httpClient from '../../../utility/httpClient';
 import { Footer } from '../../../common/Footer/Footer.component';
 import './Home.component.css';
 
+const IMG_URL = 'http://localhost:8000/file/images';
+
 export const Home = () => {
     const [products, setProducts] = useState([]);
 
@@ -12,7 +14,6 @@ export const Home = () => {
             try {
                 const response = await httpClient.GET('/product/view_product');
                 setProducts(response.data);
-                console.log("response is", response.data)
             } catch (error) {
                 console.error('There was an error fetching the products!', error);
             }
@@ -36,15 +37,24 @@ export const Home = () => {
             <div className="container">
                 <div className="row">
                     {products.map((product) => {
-                        const imgUrl = product.product_img?.[0] ? `${product.product_img?.[0]}` : "";
+                        // Get the first image from the product_img array
+                        const firstImage = product.product_img?.[0];
+
                         return (
                             <div className="col-lg-4 col-md-6 mb-4" key={product._id}>
                                 <div className="card">
-                                    {imgUrl && (
+                                    {/* Render the first image  if it exists */}
+                                    {firstImage ? (
                                         <img
-                                            src={imgUrl}
+                                            src={`${IMG_URL}/${firstImage}`}
                                             className="card-img-top"
                                             alt={product.product_name}
+                                        />
+                                    ) : (
+                                        <img
+                                            src="path/to/placeholder.jpg" // Placeholder image if no product_img
+                                            className="card-img-top"
+                                            alt="Placeholder"
                                         />
                                     )}
 

@@ -24,8 +24,8 @@ function map_product_request(requestData, product) {
     if (requestData.product_description) {
         product.product_description = requestData.product_description
     }
-    if (requestData.prodcut_model) {
-        product.prodcut_model = requestData.prodcut_model
+    if (requestData.product_model) {
+        product.product_model = requestData.product_model
     }
     if (requestData.product_tag) {
         product.product_tag = requestData.product_tag.split(',')
@@ -36,19 +36,23 @@ function map_product_request(requestData, product) {
     if (requestData.warrentyPeriod) {
         product.warrentyPeriod = requestData.warrentyPeriod
     }
-    if (!product.product_discount) {
-        product.product_discount = {}
-    }
-    if (requestData.discountedItem) {
-        product.product_discount.discountedItem = requestData.discountedItem
+
+    if (requestData.discountedItem || requestData.discountedType || requestData.discountedValue) {
+        if (!product.product_discount) {
+            product.product_discount = {}
+        }
+        if (requestData.discountedItem) {
+            product.product_discount.discountedItem = requestData.discountedItem
+        }
+
+        if (requestData.discountedType) {
+            product.product_discount.discountedType = requestData.discountedType
+        }
+        if (requestData.discountedValue) {
+            product.product_discount.discountedValue = requestData.discountedValue
+        }
     }
 
-    if (requestData.discountedType) {
-        product.product_discount.discountedType = requestData.discountedType
-    }
-    if (requestData.discountedValue) {
-        product.product_discount.discountedValue = requestData.discountedValue
-    }
     if (requestData.vendor) {
         product.vendor = requestData.vendor
     }
@@ -74,7 +78,7 @@ exports.addProduct = async (req, res, next) => {
     const newProduct = new productModel({})
     if (req.files) {
         req.body.product_img = req.files.map((item) => {
-            return "http://localhost:8000/file/images/" + item.filename;
+            return item.filename;
         })
     }
     map_product_request(req.body, newProduct)
@@ -254,3 +258,73 @@ exports.deleteProduct = async (req, res, next) => {
 }
 
 
+exports.searchProduct = async (req, res, next) => {
+    var data = req.body;
+    
+    var searchCondition = {}
+
+    map_product_request(req.body, searchCondition)
+    if (data.minPrice) {
+        searchCondition.product_price = {
+            $gte: data.minPrice
+        }
+    }
+
+    if (data.color) {
+        searchCondition.productColor = data.color;
+    }
+
+    if (data.maxPrice) {
+        searchCondition.product_price = {
+            $lte: data.maxPrice
+        }
+    }
+
+    if (data.minPrice && data.maxPrice) {
+        searchCondition.product_price = {
+            $gte: data.minPrice,
+            $lte: data.maxPrice
+        }
+    }
+
+    if (data.from_date) {
+        var from_date = new Date(data.from_date).setHours(0, 0, 0, 0)
+        searchCondition.createdAt = {
+            $gte: from_date
+        }
+    }
+
+    if (data.to_date) {
+        var to_date = new Date(data.to_date).setHours(23, 59, 59, 59)
+        searchCondition.createdAt = {
+            $lte: to_date
+        }
+    }
+
+    if (data.from_date && data.to_date) {
+        var from_date = new Date(data.from_date).setHours(0, 0, 0, 0)
+        var to_date = new Date(data.to_date).setHours(23, 59, 59, 59)
+        searchCondition.createdAt = {
+            $gte: from_date,
+            $lte: to_date
+        }
+    }
+
+    console.log("serach condition is: ", searchCondition)
+
+    productModel
+        .find(searchCondition)
+        .populate("product_category")
+        .then(product => {
+            if (!product) {
+                return next({
+                    msg: "No any product matched your search condition",
+                    status: 404
+                })
+            }
+            res.json(product)
+        })
+        .catch(err => {
+            return next(err)
+        })
+}

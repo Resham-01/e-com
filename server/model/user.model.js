@@ -40,6 +40,8 @@ const UserSchema = mongoose.Schema({
         enum: ["user", "admin"],
         default: "user"
     },
+    passwordResetTimeExpiry:Date,
+    passwordResetToken:String,
     isVerified: {
         type: Boolean,
         default: false

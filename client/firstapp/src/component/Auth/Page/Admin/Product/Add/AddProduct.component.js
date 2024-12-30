@@ -11,9 +11,16 @@ export const AddProduct = props => {
     const [isValidForm, setIsValidForm] = useState(true);
     const navigate = useNavigate()
 
-    const addProduct = product => {
+    const addProduct = (product, files) => {
+        // setIsSubmitting(true);
+        if (!isValidForm) {
+            Notify.ShowError("Please correct the errors in the form.");
+            return;
+        }
+
         setIsSubmitting(true);
-        httpClient.POST("/product/add_product", product, true)
+        
+        httpClient.UPLOAD("POST", "/product/add_product", product,files)
             .then(response => {
                 Notify.ShowSuccess("Product Added Successfully");
                 setIsSubmitting(false);
@@ -23,6 +30,22 @@ export const AddProduct = props => {
                 setIsSubmitting(false);
                 ErrorHandler(err);
             });
+
+
+
+
+
+
+        // httpClient.POST("/product/add_product", product, true)
+        //     .then(response => {
+        //         Notify.ShowSuccess("Product Added Successfully");
+        //         setIsSubmitting(false);
+        //         navigate("/admin/product/view")
+        //     })
+        //     .catch(err => {
+        //         setIsSubmitting(false);
+        //         ErrorHandler(err);
+        //     });
     };
 
     return (

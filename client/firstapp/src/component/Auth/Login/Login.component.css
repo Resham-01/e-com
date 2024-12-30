@@ -16,6 +16,20 @@
     padding: 20px;
     border-radius: 8px;
     height: 500px;
-    width: 350px;
+    width: 500px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+@media (max-width: 768px) {
+    .signin-container {
+        width: 90%; /* Width adjustment for smaller screens */
+        padding: 30px; /* Adjusted padding */
+    }
+}
+
+/* For extra small devices like phones */
+@media (max-width: 480px) {
+    .signin-container {
+        width: 95%; /* Almost full width for extra small screens */
+        padding: 20px; /* Smaller padding for phones */
+    }
 }

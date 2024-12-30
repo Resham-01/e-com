@@ -72,6 +72,21 @@ export const Sidebar = () => {
                             </ul>
                         </div>
                     </li>
+
+                    <li className="mb-1">
+                        <button className="btn btn-toggle d-inline-flex align-items-center rounded border-0"
+                            onClick={() => handleCollapseToggle('searchProduct')}>
+                            <i className={`bi bi-chevron-right rotate-icon ${activeSection === 'searchProduct' ? 'expanded' : 'collapsed'}`}></i>
+                            Search Product
+                        </button>
+                        <div className={`collapse ms-5 ${activeSection === 'searchProduct' ? 'show' : ''}`}>
+                            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><Link to="/admin/product/search" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Search</Link></li>
+                            </ul>
+                        </div>
+                    </li>
+
+
                     <li className="border-top my-3"></li>
                     <li className="mb-1">
                         <button className="btn btn-toggle d-inline-flex align-items-center rounded border-0"

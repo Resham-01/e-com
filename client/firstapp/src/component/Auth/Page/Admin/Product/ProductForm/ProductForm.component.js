@@ -20,12 +20,15 @@ export const ProductForm = (props) => {
         discountedType: '',
         discountedValue: '',
         product_tag: '',
+        filesToUpload: [],
+        imagesToRemove: [] // New state for tracking images to remove
     });
 
     const [categories, setCategories] = useState([])
+    const IMG_URL = 'http://localhost:8000/file/images'
 
     // object destruct
-    const { product_name, product_category, product_price, productColor, mfg, expiryDate, product_description, warrentyStatus, warrentyPeriod, product_model, discountedItem, discountedType, discountedValue, product_tag } = data
+    const { product_name, product_category, product_price, productColor, mfg, expiryDate, product_description, warrentyStatus, warrentyPeriod, product_model, discountedItem, discountedType, discountedValue, product_tag, filesToUpload, imagesToRemove } = data
 
     useEffect(() => {
         httpClient.GET("/category/view_category")
@@ -38,33 +41,68 @@ export const ProductForm = (props) => {
     }, [])
 
     useEffect(() => {
-        // console.log("props in product update: ", props.productData)
         if (props.productData) {
             setData(pre => ({
-                ...pre.data,
+                ...pre,
                 data: props.productData,
-                product_tag: props.productData.product_tag.join(",")
+                product_tag: props.productData.product_tag.join(","),
+                imagesToRemove: [] // Reset images to remove on update
             }))
         }
     }, [props.productData])
 
     const handleChange = e => {
-        var { name, value, type, checked } = e.target;
-        // console.log("type is: ", type)
-        // console.log("checked: ", checked)
-        if (type === "checkbox") {
-            value = checked
+        var { name, value, type, checked, files } = e.target;
+
+        if (files) {
+            setData(prevState => ({
+                ...prevState,
+                filesToUpload: [...prevState.filesToUpload, ...files]
+            }))
         }
-        setData({
-            ...data,
-            [name]: value
-        })
+        else if (type === "checkbox") {
+            setData(prevState => ({
+                ...prevState,
+                [name]: checked
+            }))
+        }
+        else {
+            setData(prevState => ({
+                ...prevState,
+                [name]: value
+            }))
+        }
     };
+
+    const handleImageRemove = (image) => {
+        setData(prevState => ({
+            ...prevState,
+            imagesToRemove: [...prevState.imagesToRemove, image]
+        }))
+    }
 
     const handleSubmit = e => {
         e.preventDefault();
-        props.submitCallback(data);
+        props.submitCallback(data, filesToUpload, imagesToRemove);
     };
+
+    const imageData = props.productData && props.productData.product_img && props.productData.product_img.length > 0 &&
+        <>
+            <label htmlFor=''>Previous Images</label>
+            <br />
+            {
+                props.productData.product_img.map((image, index) => {
+                    return (
+                        <div key={index} className="position-relative d-inline-block me-3">
+                            <img src={`${IMG_URL}/${image}`} alt="" width={'100px'} height={'100px'} className='border-end border-3' />
+                            <i className="bi bi-x position-absolute top-0 end-0 fs-2"
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => handleImageRemove(image)}></i>
+                        </div>
+                    )
+                })
+            }
+        </>
 
     return (
         <div className="form-container">
@@ -155,16 +193,15 @@ export const ProductForm = (props) => {
                         className="form-control form-control-lg"
                         onChange={handleChange} required />
                 </div>
-                <div className="form-group">
-                    <input
-                        type="checkbox"
-                        name="warrentyStatus"
-                        className='me-2'
-                        id="warrentyStatus"
-                        value={warrentyStatus}
-                        onChange={handleChange} />
-                    <label htmlFor="warrentyStatus" className='me-2'>Warrenty Status</label>
-                </div>
+                {/* -----------for warrenty status checked------------------- */}
+                <input
+                    type="checkbox"
+                    name="warrentyStatus"
+                    className='me-2'
+                    id="warrentyStatus"
+                    value={warrentyStatus}
+                    onChange={handleChange} />
+                <label htmlFor="warrentyStatus" className='me-2'>Warrenty Status</label>
                 {
                     warrentyStatus &&
                     <div className="form-group">
@@ -177,16 +214,16 @@ export const ProductForm = (props) => {
                             onChange={handleChange} />
                     </div>
                 }
-                <div className="form-group">
-                    <input
-                        type="checkbox"
-                        name="discountedItem"
-                        className='me-2'
-                        id="discountedItem"
-                        value={discountedItem}
-                        onChange={handleChange} />
-                    <label htmlFor="discountedItem" className='me-2'>Discounted Item</label>
-                </div>
+                <br /> 
+                {/* --------------for discount checked------------- */}
+                <input
+                    type="checkbox"
+                    name="discountedItem"
+                    className='me-2'
+                    id="discountedItem"
+                    value={discountedItem}
+                    onChange={handleChange} />
+                <label htmlFor="discountedItem" className='me-2'>Discounted Item</label>
                 {
                     discountedItem &&
                     <>
@@ -216,6 +253,18 @@ export const ProductForm = (props) => {
                     </>
                 }
 
+                {
+                    props.productData && imageData
+                }
+                <div className="form-group mt-4">
+                    <label htmlFor="product_image">Product Image</label>
+                    <input
+                        type="file"
+                        id="product_image"
+                        className="form-control form-control-lg"
+                        onChange={handleChange} />
+                </div>
+
                 <Button
                     enabledLabel={props.enabledLabel}
                     disabledLabel={props.disabledLabel}
@@ -226,3 +275,4 @@ export const ProductForm = (props) => {
         </div>
     );
 };
+

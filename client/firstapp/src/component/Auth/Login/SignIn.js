@@ -40,7 +40,7 @@ export const SignIn = props => {
         httpClient.POST("auth/login", formData)
             .then(response => {
                 Notify.ShowSuccess(`Welcome ${formData.userName}`)
-                console.log(response);
+                // console.log(response);
                 // localStorage.setItem("user_details", JSON.stringify(response.data.user_details))
                 localStorage.setItem("user_details", JSON.stringify(response.data.user_details))
                 console.log(isAuthenticated())
@@ -107,7 +107,10 @@ export const SignIn = props => {
                         isSubmitting={isSubmitting}
                         isValidForm={isValidForm}
                     ></Button>
+                    <div className="d-flex justify-content-between">
                     <p>Don't have an Account? <Link to={"/register"} className='text-info'>Register</Link></p>
+                    <Link to={"/forgot-password"} className='text-danger'>Forgot password?</Link>
+                    </div>
                 </form>
             </div>
         </div>
